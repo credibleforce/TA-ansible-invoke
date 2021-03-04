@@ -107,9 +107,15 @@ def process_event(helper, *args, **kwargs):
     AWX_PASS=account['password']
     AWX_JOB_TEMPLATES_API = '{0}/api/v2/job_templates'.format(AWX_HOST)
     AWX_CREDENTIALS_API = '{0}/api/v2/credentials'.format(AWX_HOST)
-    
-    response = requests.post('{0}/api/v2/tokens/'.format(AWX_HOST), verify=False, auth=(AWX_USER, AWX_PASS))
-    AWX_OAUTH2_TOKEN = response.json()['token']
+    AWX_OAUTH2_TOKEN = None
+
+    # check for token user - indicates we should use token auth
+    if AWX_USER!="token":
+        response = requests.post('{0}/api/v2/tokens/'.format(AWX_HOST), verify=False, auth=(AWX_USER, AWX_PASS))
+        AWX_OAUTH2_TOKEN = response.json()['token']
+    else:
+        AWX_OAUTH2_TOKEN = AWX_PASS
+        
     AWX_OAUTH2_TOKEN_URL = '{0}{1}'.format(AWX_HOST,response.json()['url'])
     
     headers = {"User-agent": "splunk-awx-client", "Content-Type": "application/json","Authorization": "Bearer {}".format(AWX_OAUTH2_TOKEN)}
