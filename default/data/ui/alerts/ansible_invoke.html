@@ -1,0 +1,74 @@
+<form class="form-horizontal form-complex">
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_global_account_name">Global Account Name <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.global_account_name" id="ansible_invoke_global_account_name"/>
+                <span class="help-block"> 
+                    Username from global accounts. If using an OAUTH token provider the username of 'token' as the username.
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_awx_url">AWX URL <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.awx_url" id="ansible_invoke_awx_url"/>
+                <span class="help-block"> 
+                    The URL for your AWX server (e.g. https://ansible.mydomain.com)
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_request_id">Request ID <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.request_id" id="ansible_invoke_request_id"/>
+                <span class="help-block"> 
+                    A tag passed to the playbook for tracing. Should be unique for each execution.
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_technique_id">Technique ID <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.technique_id" id="ansible_invoke_technique_id"/>
+                <span class="help-block"> 
+                    Mitre ATT&amp;CK Technique (e.g. T1053.005)
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_technique_test_numbers">Test Numbers <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.technique_test_numbers" id="ansible_invoke_technique_test_numbers"/>
+                <span class="help-block"> 
+                    Test Number, 0 indicates run all applicable tests. Use comma separated values to run more than one individual test.
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_target">Target <span class="required">*</span> </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.target" id="ansible_invoke_target"/>
+                <span class="help-block"> 
+                    A wildcard hostname (e.g. awx template limit)
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_splunk_hec_url">Splunk HEC URL  </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.splunk_hec_url" id="ansible_invoke_splunk_hec_url"/>
+                <span class="help-block"> 
+                    The URL for the Splunk HEC server where Atomic test results will be sent
+                </span>
+    </div>
+</div>
+<div class="control-group">
+	<label class="control-label" for="ansible_invoke_splunk_hec_username">Splunk HEC Username  </label>
+    <div class="controls">
+	<input type="text" name="action.ansible_invoke.param.splunk_hec_username" id="ansible_invoke_splunk_hec_username"/>
+                <span class="help-block"> 
+                    The global account username where the HEC token is stored.
+                </span>
+    </div>
+</div>
+</form>
