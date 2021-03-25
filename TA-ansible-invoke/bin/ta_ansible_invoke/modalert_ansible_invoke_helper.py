@@ -1,6 +1,19 @@
 
 # encoding = utf-8
 
+# define a class to encapsulate Job template info
+class JobTemplate():
+    def __init__(self,id,name,launch_url):
+        self.id=id
+        self.name=name
+        self.launch_url=launch_url
+
+
+class Credential():
+    def __init__(self,id,name):
+        self.id=id
+        self.name=name
+
 def process_event(helper, *args, **kwargs):
     """
     # IMPORTANT
@@ -74,7 +87,7 @@ def process_event(helper, *args, **kwargs):
     usehec = False
     account = helper.get_user_credential(helper.get_param("ansible_awx_user"))
     hec_account = None
-    hec_token = None
+    
     try:
         hec_account = helper.get_user_credential(helper.get_param("splunk_hec_user"))
         usehec = True
