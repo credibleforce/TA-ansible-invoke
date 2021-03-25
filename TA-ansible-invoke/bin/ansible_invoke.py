@@ -1,7 +1,7 @@
 
 # encoding = utf-8
 # Always put this line at the beginning of this file
-import ta_ta_ansible_invoke_declare
+import ta_ansible_invoke_declare
 
 import os
 import sys
@@ -48,8 +48,8 @@ class AlertActionWorkeransible_invoke(ModularAlertBase):
             self.log_error('splunk_hec_url is a mandatory parameter, but its value is None.')
             return False
 
-        if not self.get_param("splunk_hec_username"):
-            self.log_error('splunk_hec_username is a mandatory parameter, but its value is None.')
+        if not self.get_param("splunk_hec_user"):
+            self.log_error('splunk_hec_user is a mandatory parameter, but its value is None.')
             return False
         return True
 
@@ -73,5 +73,5 @@ class AlertActionWorkeransible_invoke(ModularAlertBase):
         return status
 
 if __name__ == "__main__":
-    exitcode = AlertActionWorkeransible_invoke("TA-ta-ansible-invoke", "ansible_invoke").run(sys.argv)
+    exitcode = AlertActionWorkeransible_invoke("TA-ansible-invoke", "ansible_invoke").run(sys.argv)
     sys.exit(exitcode)

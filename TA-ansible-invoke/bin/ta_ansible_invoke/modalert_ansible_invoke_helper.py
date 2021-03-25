@@ -11,6 +11,12 @@ def process_event(helper, *args, **kwargs):
 
     [sample_code_macro:start]
 
+    # The following example gets and sets the log level
+    helper.set_log_level(helper.log_level)
+
+    # The following example gets account information
+    user_account = helper.get_user_credential("<account_name>")
+
     # The following example gets the alert action parameters and prints them to the log
     request_id = helper.get_param("request_id")
     helper.log_info("request_id={}".format(request_id))
@@ -39,8 +45,8 @@ def process_event(helper, *args, **kwargs):
     splunk_hec_url = helper.get_param("splunk_hec_url")
     helper.log_info("splunk_hec_url={}".format(splunk_hec_url))
 
-    splunk_hec_username = helper.get_param("splunk_hec_username")
-    helper.log_info("splunk_hec_username={}".format(splunk_hec_username))
+    splunk_hec_user = helper.get_param("splunk_hec_user")
+    helper.log_info("splunk_hec_user={}".format(splunk_hec_user))
 
 
     # The following example adds two sample events ("hello", "world")
@@ -70,7 +76,7 @@ def process_event(helper, *args, **kwargs):
     hec_account = None
     hec_token = None
     try:
-        hec_account = helper.get_user_credential(helper.get_param("splunk_hec_username"))
+        hec_account = helper.get_user_credential(helper.get_param("splunk_hec_user"))
         usehec = True
     except:
         helper.log_warn("Unable to locate HEC user - this can be safely ignored when HEC is not used to send Atomic summary to Splunk.")

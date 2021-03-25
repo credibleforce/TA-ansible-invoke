@@ -10,5 +10,5 @@ param.ansible_awx_template = <string> Ansible AWX Template. It's a required para
 param.ansible_awx_target = <string> Ansible AWX Target. It's a required parameter.
 param.ansible_awx_credentials = <string> Ansible AWX Credentials.
 param.splunk_hec_url = <string> Splunk HEC URL. It's a required parameter.
-param.splunk_hec_username = <string> Splunk HEC User. It's a required parameter.
+param.splunk_hec_user = <string> Splunk HEC User. It's a required parameter.
 
