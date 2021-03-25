@@ -14,8 +14,8 @@ if sys.version_info[0] < 3:
 else:
     py_version = "aob_py3"
 
-ta_name = 'TA-ansible-invoke'
-ta_lib_name = 'ta_ansible_invoke'
+ta_name = 'TA-ta-ansible-invoke'
+ta_lib_name = 'ta_ta_ansible_invoke'
 pattern = re.compile(r"[\\/]etc[\\/]apps[\\/][^\\/]+[\\/]bin[\\/]?$")
 new_paths = [path for path in sys.path if not pattern.search(path) or ta_name in path]
 new_paths.insert(0, os.path.sep.join([os.path.dirname(__file__), ta_lib_name]))

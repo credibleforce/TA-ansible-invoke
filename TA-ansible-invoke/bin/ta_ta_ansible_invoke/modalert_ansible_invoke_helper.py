@@ -1,19 +1,6 @@
 
 # encoding = utf-8
 
-# define a class to encapsulate Job template info
-class JobTemplate():
-    def __init__(self,id,name,launch_url):
-        self.id=id
-        self.name=name
-        self.launch_url=launch_url
-
-
-class Credential():
-    def __init__(self,id,name):
-        self.id=id
-        self.name=name
-
 def process_event(helper, *args, **kwargs):
     """
     # IMPORTANT
@@ -24,19 +11,7 @@ def process_event(helper, *args, **kwargs):
 
     [sample_code_macro:start]
 
-    # The following example gets and sets the log level
-    helper.set_log_level(helper.log_level)
-
-    # The following example gets account information
-    user_account = helper.get_user_credential("<account_name>")
-
     # The following example gets the alert action parameters and prints them to the log
-    global_account_name = helper.get_param("global_account_name")
-    helper.log_info("global_account_name={}".format(global_account_name))
-
-    awx_url = helper.get_param("awx_url")
-    helper.log_info("awx_url={}".format(awx_url))
-
     request_id = helper.get_param("request_id")
     helper.log_info("request_id={}".format(request_id))
 
@@ -46,8 +21,20 @@ def process_event(helper, *args, **kwargs):
     technique_test_numbers = helper.get_param("technique_test_numbers")
     helper.log_info("technique_test_numbers={}".format(technique_test_numbers))
 
-    target = helper.get_param("target")
-    helper.log_info("target={}".format(target))
+    ansible_awx_url = helper.get_param("ansible_awx_url")
+    helper.log_info("ansible_awx_url={}".format(ansible_awx_url))
+
+    ansible_awx_user = helper.get_param("ansible_awx_user")
+    helper.log_info("ansible_awx_user={}".format(ansible_awx_user))
+
+    ansible_awx_template = helper.get_param("ansible_awx_template")
+    helper.log_info("ansible_awx_template={}".format(ansible_awx_template))
+
+    ansible_awx_target = helper.get_param("ansible_awx_target")
+    helper.log_info("ansible_awx_target={}".format(ansible_awx_target))
+
+    ansible_awx_credentials = helper.get_param("ansible_awx_credentials")
+    helper.log_info("ansible_awx_credentials={}".format(ansible_awx_credentials))
 
     splunk_hec_url = helper.get_param("splunk_hec_url")
     helper.log_info("splunk_hec_url={}".format(splunk_hec_url))
@@ -74,30 +61,36 @@ def process_event(helper, *args, **kwargs):
     helper.log_info("server_uri={}".format(helper.settings["server_uri"]))
     [sample_code_macro:end]
     """
+    
     import requests
     import json, time
     
     usehec = False
-    account = helper.get_user_credential(helper.get_param("global_account_name"))
+    account = helper.get_user_credential(helper.get_param("ansible_awx_user"))
     hec_account = None
     hec_token = None
     try:
-        hec_account = helper.get_user_credential(splunk_hec_username = helper.get_param("splunk_hec_username"))
-        #hec_token = hec_account['password']
+        hec_account = helper.get_user_credential(helper.get_param("splunk_hec_username"))
         usehec = True
     except:
         helper.log_warn("Unable to locate HEC user - this can be safely ignored when HEC is not used to send Atomic summary to Splunk.")
         
-    awx_url = helper.get_param("awx_url")
-    helper.log_info("awx_url={}".format(awx_url))
+    
     request_id = helper.get_param("request_id")
     helper.log_info("request_id={}".format(request_id))
     technique_id = helper.get_param("technique_id")
     helper.log_info("technique_id={}".format(technique_id))
     technique_test_numbers = helper.get_param("technique_test_numbers")
     helper.log_info("technique_test_numbers={}".format(technique_test_numbers))
-    target = helper.get_param("target")
-    helper.log_info("target={}".format(target))
+    
+    awx_url = helper.get_param("ansible_awx_url")
+    helper.log_info("awx_url={}".format(awx_url))
+    awx_template = helper.get_param("ansible_awx_template")
+    helper.log_info("awx_template={}".format(awx_template))
+    awx_target = helper.get_param("ansible_awx_target")
+    helper.log_info("target={}".format(awx_target))
+    awx_credentials = helper.get_param("ansible_awx_credentials")
+    helper.log_info("awx_credentials={}".format(awx_credentials))
     splunk_hec_url = helper.get_param("splunk_hec_url")
     helper.log_info("splunk_hec_url={}".format(splunk_hec_url))
     
@@ -119,9 +112,9 @@ def process_event(helper, *args, **kwargs):
     AWX_OAUTH2_TOKEN_URL = '{0}{1}'.format(AWX_HOST,response.json()['url'])
     
     headers = {"User-agent": "splunk-awx-client", "Content-Type": "application/json","Authorization": "Bearer {}".format(AWX_OAUTH2_TOKEN)}
-    job_template = 'Invoke Simulation'
-    job_credential = 'lab-windows-domain'
-    job_limit = target
+    job_template = awx_template
+    job_credential = awx_credentials
+    job_limit = awx_target
     
     splunk_hec_token = None
     
@@ -141,7 +134,7 @@ def process_event(helper, *args, **kwargs):
             break
     
     
-    # get the credentials is
+    # get the credentials
     response = requests.get(AWX_CREDENTIALS_API,headers=headers)
     for cred in response.json()['results']:
         cr = Credential(cred['id'], cred['name'])

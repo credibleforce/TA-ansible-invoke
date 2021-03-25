@@ -5,11 +5,11 @@
     "id": {
       "group": null,
       "name": "TA-ansible-invoke",
-      "version": "1.0.0"
+      "version": "0.0.2"
     },
     "author": [
       {
-        "name": "Mobia Professional Services",
+        "name": "Mobia Security Services",
         "email": null,
         "company": null
       }
