@@ -203,7 +203,7 @@ def process_event(helper, *args, **kwargs):
                 break
     
         helper.log_info("Fetching Job stdout")
-        job_stdout_response = requests.get(AWX_HOST + response.json()['related']['stdout'] + "?format=json", verify=VERIFY_SSL_CERTIFICATE, headers=headers, verify=False)
+        job_stdout_response = requests.get(AWX_HOST + response.json()['related']['stdout'] + "?format=json", verify=VERIFY_SSL_CERTIFICATE, headers=headers)
     
         helper.log_info(job_stdout_response.json()['content'])
     else:
