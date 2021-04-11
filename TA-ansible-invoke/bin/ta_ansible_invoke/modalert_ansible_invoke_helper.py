@@ -1,6 +1,19 @@
 
 # encoding = utf-8
 
+# define a class to encapsulate Job template info
+class JobTemplate():
+    def __init__(self,id,name,launch_url):
+        self.id=id
+        self.name=name
+        self.launch_url=launch_url
+
+
+class Credential():
+    def __init__(self,id,name):
+        self.id=id
+        self.name=name
+
 def process_event(helper, *args, **kwargs):
     """
     # IMPORTANT
@@ -72,11 +85,11 @@ def process_event(helper, *args, **kwargs):
     import json, time
     
     VERIFY_SSL_CERTIFICATE=False
-    
+
     usehec = False
     account = helper.get_user_credential(helper.get_param("ansible_awx_user"))
     hec_account = None
-    hec_token = None
+    
     try:
         hec_account = helper.get_user_credential(helper.get_param("splunk_hec_user"))
         usehec = True
@@ -133,7 +146,7 @@ def process_event(helper, *args, **kwargs):
     helper.log_info("Starting...")
     
     # get the job template id
-    response = requests.get(AWX_JOB_TEMPLATES_API,verify=VERIFY_SSL_CERTIFICATE,headers=headers)
+    response = requests.get(AWX_JOB_TEMPLATES_API, verify=VERIFY_SSL_CERTIFICATE, headers=headers)
     for job in response.json()['results']:
         jt = JobTemplate(job['id'], job['name'], AWX_HOST + job['related']['launch'])
     
@@ -143,7 +156,7 @@ def process_event(helper, *args, **kwargs):
     
     
     # get the credentials
-    response = requests.get(AWX_CREDENTIALS_API,verify=VERIFY_SSL_CERTIFICATE,headers=headers)
+    response = requests.get(AWX_CREDENTIALS_API, verify=VERIFY_SSL_CERTIFICATE, headers=headers)
     for cred in response.json()['results']:
         cr = Credential(cred['id'], cred['name'])
     
