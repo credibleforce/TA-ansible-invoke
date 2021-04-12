@@ -134,7 +134,7 @@ def process_event(helper, *args, **kwargs):
     
     headers = {"User-agent": "splunk-awx-client", "Content-Type": "application/json","Authorization": "Bearer {}".format(AWX_OAUTH2_TOKEN)}
     job_template = awx_template
-    job_credential = 'lab-windows-local'
+    job_credential = awx_credentials
     job_limit = awx_target
     
     splunk_hec_token = None
@@ -156,19 +156,16 @@ def process_event(helper, *args, **kwargs):
     
     
     # get the credentials
-    if(job_credential!=None and job_credential!=""):
-        response = requests.get(AWX_CREDENTIALS_API, verify=VERIFY_SSL_CERTIFICATE, headers=headers)
-        for cred in response.json()['results']:
-            cr = Credential(cred['id'], cred['name'])
-        
-            if(cr.name == job_credential):
-                helper.log_info("Credential {} located.".format(cr.name))
-                break
+    response = requests.get(AWX_CREDENTIALS_API, verify=VERIFY_SSL_CERTIFICATE, headers=headers)
+    for cred in response.json()['results']:
+        cr = Credential(cred['id'], cred['name'])
     
-        # launch template T1053 => T1218.010
-        response = requests.post(jt.launch_url, verify=VERIFY_SSL_CERTIFICATE, headers=headers, data=json.dumps({'limit':job_limit,'credentials':[cr.id], 'extra_vars': { "technique_id": technique_id, "technique_test_numbers": technique_test_numbers, "send_results_to_hec": usehec, "splunk_hec_url": splunk_hec_url, "splunk_hec_token": splunk_hec_token , "request_id": request_id }}))
-    else:
-        response = requests.post(jt.launch_url, verify=VERIFY_SSL_CERTIFICATE, headers=headers, data=json.dumps({'limit':job_limit, 'extra_vars': { "technique_id": technique_id, "technique_test_numbers": technique_test_numbers, "send_results_to_hec": usehec, "splunk_hec_url": splunk_hec_url, "splunk_hec_token": splunk_hec_token , "request_id": request_id }}))
+        if(cr.name == job_credential):
+            helper.log_info("Credential {} located.".format(cr.name))
+            break
+    
+    # launch template T1053 => T1218.010
+    response = requests.post(jt.launch_url, verify=VERIFY_SSL_CERTIFICATE, headers=headers, data=json.dumps({'limit':job_limit,'credentials':[cr.id], 'extra_vars': { "technique_id": technique_id, "technique_test_numbers": technique_test_numbers, "send_results_to_hec": usehec, "splunk_hec_url": splunk_hec_url, "splunk_hec_token": splunk_hec_token , "request_id": request_id }}))
 
     
     if(response.status_code == 201):
