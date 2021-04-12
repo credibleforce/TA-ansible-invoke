@@ -134,7 +134,7 @@ def process_event(helper, *args, **kwargs):
     
     headers = {"User-agent": "splunk-awx-client", "Content-Type": "application/json","Authorization": "Bearer {}".format(AWX_OAUTH2_TOKEN)}
     job_template = awx_template
-    job_credential = awx_credentials
+    job_credential = 'lab-windows-local'
     job_limit = awx_target
     
     splunk_hec_token = None
